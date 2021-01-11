@@ -87,11 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Image.asset('./assets/images/logo.png'),
-                    Text(
-                      'Orbigo',
-                      style: TextStyle(fontSize: 40),
+                    Image.asset(
+                      './assets/images/logo.png',
+                      width: 200,
                     ),
+                    const SizedBox(height: 40.0),
+                    // Text(
+                    //   'Orbigo',
+                    //   style: TextStyle(fontSize: 40),
+                    // ),
                     const SizedBox(height: 40.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,

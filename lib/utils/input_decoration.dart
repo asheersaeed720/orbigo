@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 // TEXTFIELD
-InputDecoration buildTextFieldInputDecoration(hintText, IconData icon) {
+InputDecoration buildTextFieldInputDecoration(labelText, IconData icon) {
   return InputDecoration(
     prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
-    hintText: hintText,
+    // hintText: hintText,
+    labelText: labelText,
     hintStyle: TextStyle(color: Colors.grey),
     contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -13,11 +14,12 @@ InputDecoration buildTextFieldInputDecoration(hintText, IconData icon) {
 
 // PASSWORD FIELD
 InputDecoration buildPasswordInputDecoration(
-    String hintText, IconData icon, suffixIcon) {
+    String labelText, IconData icon, suffixIcon) {
   return InputDecoration(
     prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
     suffixIcon: suffixIcon,
-    hintText: hintText,
+    // hintText: hintText,
+    labelText: labelText,
     contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
   );

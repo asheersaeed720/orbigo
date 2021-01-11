@@ -15,18 +15,18 @@ class CustomColor {
 }
 
 Map<int, Color> color = {
-  50: Color.fromRGBO(8, 45, 74, .1),
-  100: Color.fromRGBO(8, 45, 74, .2),
-  200: Color.fromRGBO(8, 45, 74, .3),
-  300: Color.fromRGBO(8, 45, 74, .4),
-  400: Color.fromRGBO(8, 45, 74, .5),
-  500: Color.fromRGBO(8, 45, 74, .6),
-  600: Color.fromRGBO(8, 45, 74, .7),
-  700: Color.fromRGBO(8, 45, 74, .8),
-  800: Color.fromRGBO(8, 45, 74, .9),
+  50: Color.fromRGBO(14, 36, 59, .1),
+  100: Color.fromRGBO(14, 36, 59, .2),
+  200: Color.fromRGBO(14, 36, 59, .3),
+  300: Color.fromRGBO(14, 36, 59, .4),
+  400: Color.fromRGBO(14, 36, 59, .5),
+  500: Color.fromRGBO(14, 36, 59, .6),
+  600: Color.fromRGBO(14, 36, 59, .7),
+  700: Color.fromRGBO(14, 36, 59, .8),
+  800: Color.fromRGBO(14, 36, 59, .9),
 };
 
-MaterialColor customPrimaryColor = MaterialColor(0xFF1D1D38, color);
+MaterialColor customPrimaryColor = MaterialColor(0xFF0e243b, color);
 
 final customTheme = ThemeData(
   primarySwatch: customPrimaryColor,
