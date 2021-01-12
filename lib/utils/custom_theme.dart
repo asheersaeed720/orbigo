@@ -27,10 +27,11 @@ Map<int, Color> color = {
 };
 
 MaterialColor customPrimaryColor = MaterialColor(0xFF0e243b, color);
+MaterialColor customAccentColor = MaterialColor(0xFF1c496b, color);
 
 final customTheme = ThemeData(
   primarySwatch: customPrimaryColor,
-  accentColor: Colors.blue,
+  accentColor: customAccentColor,
   errorColor: Colors.redAccent,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   fontFamily: 'ProximaNova',

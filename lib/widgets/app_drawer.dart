@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orbigo/screens/about_screen.dart';
 import 'package:orbigo/screens/change_password_screen.dart';
+import 'package:orbigo/screens/login_screen.dart';
 import 'package:orbigo/screens/setting_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -47,7 +48,7 @@ class AppDrawer extends StatelessWidget {
             title: Text("Logout"),
             onTap: () {
               Navigator.pop(context);
-              // Navigator.of(context).pushNamed(TrackMyShipmentScreen.routeName);
+              Navigator.of(context).pushNamed(LoginScreen.routeName);
             },
           ),
           ListTile(
@@ -79,7 +80,7 @@ class AppDrawer extends StatelessWidget {
             title: Text("Exit"),
             onTap: () {
               Navigator.pop(context);
-              // Navigator.of(context).pushNamed(TrackMyShipmentScreen.routeName);
+              Navigator.of(context).pushNamed(LoginScreen.routeName);
             },
           ),
           Divider(color: Colors.grey),

@@ -74,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         // appBar: AppBar(
         //   backgroundColor: Colors.white,
         //   elevation: 0,
@@ -91,22 +90,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       './assets/images/logo.png',
                       width: 200,
                     ),
-                    const SizedBox(height: 40.0),
-                    // Text(
-                    //   'Orbigo',
-                    //   style: TextStyle(fontSize: 40),
-                    // ),
-                    const SizedBox(height: 40.0),
+                    const SizedBox(height: 42.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: usernameField,
                     ),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 20.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: passwordField,
                     ),
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height: 20.0),
                     Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: serverPortField,
@@ -114,8 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     // authPvd.isLoading
                     //     ? LoadingIndicator()
                     //     : longButton(context, 'login', doLogin),
-                    const SizedBox(height: 16.0),
-                    longButton(context, 'Login', doLogin),
+                    const SizedBox(height: 20.0),
+                    longButton(context, 'LOGIN', doLogin),
                     const SizedBox(height: 10.0),
                   ],
                 ),

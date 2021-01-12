@@ -4,6 +4,7 @@ import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/login_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
 import 'package:orbigo/screens/setting_screen.dart';
+import 'package:orbigo/screens/user/user_profile_screen.dart';
 import 'package:orbigo/screens/user/user_screen.dart';
 
 final customRoutes = {
@@ -15,4 +16,5 @@ final customRoutes = {
   AboutScreen.routeName: (context) => AboutScreen(),
   GoogleMapScreen.routeName: (context) => GoogleMapScreen(),
   EventsScreen.routeName: (context) => EventsScreen(),
+  UserProfileScreen.routeName: (context) => UserProfileScreen(),
 };

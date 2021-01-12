@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -69,8 +71,26 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('this is subscriber screen!'),
+      body: ListView(
+        children: [
+          Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor:
+                    Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                child: Text(
+                  'U',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              title: Text('User 1'),
+              trailing: IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.location_on),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
