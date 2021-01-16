@@ -30,8 +30,8 @@ dependencies:
   flushbar: ^1.10.4
   fluttertoast: ^7.1.6
   custom_switch: ^0.0.1
-  supercharged: ^1.11.1
-  simple_animations: ^2.2.3
+  path_provider: ^1.6.24
+  flutter_webrtc: ^0.5.7
   flutter_riverpod: ^0.12.1
   cached_network_image: ^2.5.0
   shared_preferences: ^0.5.12+4

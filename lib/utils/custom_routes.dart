@@ -4,8 +4,8 @@ import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/login_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
 import 'package:orbigo/screens/setting_screen.dart';
-import 'package:orbigo/screens/user/user_profile_screen.dart';
-import 'package:orbigo/screens/user/user_screen.dart';
+import 'package:orbigo/screens/user_screens/user_profile_screen.dart';
+import 'package:orbigo/screens/user_screens/user_screen.dart';
 
 final customRoutes = {
   // LoginScreen.routeName: (context) => LoginScreen(),

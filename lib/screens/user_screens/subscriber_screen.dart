@@ -64,9 +64,13 @@ class SubscriberScreen extends StatefulWidget {
 }
 
 class _SubscriberScreenState extends State<SubscriberScreen> {
-  int _page = 0;
+  bool isVoiceEnable = false;
 
-  GlobalKey _bottomNavigationKey = GlobalKey();
+  testVoice() {
+    setState(() {
+      isVoiceEnable = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +79,39 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
         children: [
           Card(
             child: ListTile(
+              onLongPress: () {
+                testVoice();
+              },
               leading: CircleAvatar(
                 backgroundColor:
                     Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                child: Text(
+                  'Y',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              title: Text('You'),
+              trailing: Container(
+                padding: EdgeInsets.all(8),
+                // color: Colors.grey,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Icon(
+                  Icons.mic,
+                  size: isVoiceEnable ? 30 : 24,
+                  color: isVoiceEnable ? Colors.green : Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const CircleAvatar(
+                // backgroundColor:
+                //     Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                backgroundColor: Colors.grey,
                 child: Text(
                   'U',
                   style: TextStyle(color: Colors.white),

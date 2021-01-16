@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orbigo/models/user.dart';
-import 'package:orbigo/screens/user/user_screen.dart';
+import 'package:orbigo/screens/user_screens/user_screen.dart';
 import 'package:orbigo/utils/input_decoration.dart';
 import 'package:orbigo/utils/long_btn.dart';
 

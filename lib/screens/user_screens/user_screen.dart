@@ -2,9 +2,9 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
-import 'package:orbigo/screens/user/group_screen.dart';
-import 'package:orbigo/screens/user/subscriber_screen.dart';
-import 'package:orbigo/screens/user/user_profile_screen.dart';
+import 'package:orbigo/screens/user_screens/group_screen.dart';
+import 'package:orbigo/screens/user_screens/subscriber_screen.dart';
+import 'package:orbigo/screens/user_screens/user_profile_screen.dart';
 import 'package:orbigo/widgets/app_drawer.dart';
 
 class UserScreen extends StatefulWidget {
