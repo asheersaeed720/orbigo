@@ -1,0 +1,7 @@
+/// Define App ID and Token
+const APP_ID = '24978d4eb4f74214b1dc13dd3a9a302d';
+const Token =
+    '00624978d4eb4f74214b1dc13dd3a9a302dIACwLiJcpiw95929bWcjZ9zwMlp69eENd9UaYbJ6jVypKL/3z8MAAAAAEAC0V+LrwHMNYAEAAQDAcw1g';
+
+// const VideoToken =
+//     '00624978d4eb4f74214b1dc13dd3a9a302dIACVB5NBExdjVWHj3V02Zj+w/bBmSGF/WSGOFAJ8zi7V2MF9Om0AAAAAEAC0V+LrUmsNYAEAAQBRaw1g';

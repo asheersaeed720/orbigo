@@ -17,4 +17,5 @@ final customRoutes = {
   GoogleMapScreen.routeName: (context) => GoogleMapScreen(),
   EventsScreen.routeName: (context) => EventsScreen(),
   UserProfileScreen.routeName: (context) => UserProfileScreen(),
+  // GroupDetail.routeName: (context) => GroupDetail(),
 };

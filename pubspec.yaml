@@ -32,10 +32,11 @@ dependencies:
   custom_switch: ^0.0.1
   path_provider: ^1.6.24
   flutter_webrtc: ^0.5.7
+  agora_rtc_engine: ^3.2.1
   flutter_riverpod: ^0.12.1
+  permission_handler: ^5.0.1+1
   cached_network_image: ^2.5.0
   shared_preferences: ^0.5.12+4
-  curved_navigation_bar: ^0.3.7
   google_maps_flutter: ^0.5.28+1
 
   # The following adds the Cupertino Icons font to your application.

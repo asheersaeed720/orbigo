@@ -1,11 +1,11 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
-import 'package:orbigo/screens/user_screens/group_screen.dart';
+import 'package:orbigo/screens/user_screens/group_screen/group_screen.dart';
 import 'package:orbigo/screens/user_screens/subscriber_screen.dart';
 import 'package:orbigo/screens/user_screens/user_profile_screen.dart';
 import 'package:orbigo/widgets/app_drawer.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserScreen extends StatefulWidget {
   static const String routeName = '/user';
@@ -22,6 +22,17 @@ class _UserScreenState extends State<UserScreen> {
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
   String searchQuery = "Search query";
+
+  Future<void> getUserLocation(Permission permission) async {
+    final status = await permission.request();
+    print(status);
+  }
+
+  @override
+  void initState() {
+    getUserLocation(Permission.location);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
