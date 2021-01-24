@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
-import 'package:orbigo/screens/user_screens/group_screen/group_screen.dart';
-import 'package:orbigo/screens/user_screens/subscriber_screen.dart';
+import 'package:orbigo/screens/user_screens/groups/group_screen.dart';
+import 'package:orbigo/screens/user_screens/subsribers/subscriber_screen.dart';
 import 'package:orbigo/screens/user_screens/user_profile_screen.dart';
 import 'package:orbigo/widgets/app_drawer.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,24 +15,9 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
-  int _page = 0;
-
-  GlobalKey _bottomNavigationKey = GlobalKey();
-
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
   String searchQuery = "Search query";
-
-  Future<void> getUserLocation(Permission permission) async {
-    final status = await permission.request();
-    print(status);
-  }
-
-  @override
-  void initState() {
-    getUserLocation(Permission.location);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +54,7 @@ class _UserScreenState extends State<UserScreen> {
       controller: _searchQueryController,
       autofocus: true,
       decoration: InputDecoration(
-        hintText: "Search Data...",
+        hintText: "Searching...",
         border: InputBorder.none,
         hintStyle: TextStyle(color: Colors.white30),
       ),
@@ -97,9 +82,9 @@ class _UserScreenState extends State<UserScreen> {
 
     return <Widget>[
       IconButton(
-        icon: Icon(Icons.map),
+        icon: Icon(Icons.location_on),
         onPressed: () {
-          Navigator.of(context).pushNamed(GoogleMapScreen.routeName);
+          Navigator.of(context).pushNamed(MapScreen.routeName);
         },
       ),
       IconButton(

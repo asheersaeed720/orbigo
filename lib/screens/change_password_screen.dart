@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orbigo/utils/input_decoration.dart';
+import 'package:orbigo/utils/constants.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   static const String routeName = '/change-password';

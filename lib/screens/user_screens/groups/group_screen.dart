@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:orbigo/screens/user_screens/group_screen/audio_group_detail.dart';
-import 'package:orbigo/screens/user_screens/group_screen/video_group_detail.dart';
+import 'package:orbigo/screens/user_screens/groups/audio_group_detail.dart';
+import 'package:orbigo/screens/user_screens/groups/video_group_detail.dart';
 import 'package:orbigo/utils/config.dart' as config;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
