@@ -17,6 +17,10 @@ import 'package:permission_handler/permission_handler.dart';
 class UserScreen extends StatefulWidget {
   static const String routeName = '/user';
 
+  // final Function joinChannelFunction;
+
+  // UserScreen(this.joinChannelFunction);
+
   @override
   _UserScreenState createState() => _UserScreenState();
 }
@@ -25,6 +29,12 @@ class _UserScreenState extends State<UserScreen> {
   TextEditingController _searchQueryController = TextEditingController();
   bool _isSearching = false;
   String searchQuery = "Search query";
+
+  @override
+  void initState() {
+    // joinChannelFunction();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

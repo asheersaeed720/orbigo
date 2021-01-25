@@ -1,11 +1,17 @@
+import 'dart:developer';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orbigo/models/user.dart';
 import 'package:orbigo/providers/auth_provider.dart';
 import 'package:orbigo/providers/user_provider.dart';
-import 'package:orbigo/utils/config.dart';
+import 'package:orbigo/utils/config.dart' as config;
 import 'package:orbigo/widgets/loading_indicator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SubscriberScreen extends StatefulWidget {
   @override
@@ -13,109 +19,62 @@ class SubscriberScreen extends StatefulWidget {
 }
 
 class _SubscriberScreenState extends State<SubscriberScreen> {
-  // RtcEngine _engine;
-  // bool isSpeaking = false;
+  RtcEngine _engine;
 
-  // onPush() {
-  //   print('Pushing');
-  //   setState(() {
-  //     isSpeaking = true;
-  //   });
-  // }
+  ClientRole _role = ClientRole.Broadcaster;
 
-  // onUp() {
-  //   print('OnCancel');
-  //   setState(() {
-  //     isSpeaking = false;
-  //   });
-  // }
+  bool isJoined = false,
+      openMicrophone = true,
+      enableSpeakerphone = true,
+      playEffect = false;
+  TextEditingController _controller;
 
-  // final _users = <int>[];
-  // final _infoStrings = <String>[];
-  // bool muted = false;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: config.Channel_Name);
+    this._initEngine();
+    this._joinChannel();
+  }
 
-  // @override
-  // void dispose() {
-  //   // clear users
-  //   _users.clear();
-  //   // destroy sdk
-  //   _engine.leaveChannel();
-  //   _engine.destroy();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _engine.destroy();
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // initialize agora sdk
-  //   initialize();
-  // }
+  _initEngine() async {
+    _engine = await RtcEngine.create(config.APP_ID);
+    this._addListeners();
 
-  // Future<void> initialize() async {
-  //   if (APP_ID.isEmpty) {
-  //     setState(() {
-  //       _infoStrings.add(
-  //         'APP_ID missing, please provide your APP_ID in settings.dart',
-  //       );
-  //       _infoStrings.add('Agora Engine is not starting');
-  //     });
-  //     return;
-  //   }
+    await _engine.enableAudio();
+    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
+    await _engine.setClientRole(ClientRole.Broadcaster);
+  }
 
-  //   await _initAgoraRtcEngine();
-  //   _addAgoraEventHandlers();
-  //   await _engine.enableWebSdkInteroperability(true);
-  //   VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
-  //   configuration.dimensions = VideoDimensions(1920, 1080);
-  //   await _engine.setVideoEncoderConfiguration(configuration);
-  //   // await _engine.joinChannel(Token, widget.channelName, null, 0);
-  // }
+  _addListeners() {
+    _engine.setEventHandler(RtcEngineEventHandler(
+      joinChannelSuccess: (channel, uid, elapsed) {
+        log('joinChannelSuccess $channel $uid $elapsed');
+        setState(() {
+          isJoined = true;
+        });
+      },
+      leaveChannel: (stats) {
+        log('leaveChannel ${stats.toJson()}');
+        setState(() {
+          isJoined = false;
+        });
+      },
+    ));
+  }
 
-  // // /// Create agora sdk instance and initialize
-  // // Future<void> _initAgoraRtcEngine() async {
-  // //   _engine = await RtcEngine.create(APP_ID);
-  // //   await _engine.enableVideo();
-  // //   // await _engine.enableAudio();
-  // //   await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-  // //   // await _engine.setClientRole(widget.role);
-  // // }
-
-  // /// Add agora event handlers
-  // void _addAgoraEventHandlers() {
-  //   _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
-  //     setState(() {
-  //       final info = 'onError: $code';
-  //       _infoStrings.add(info);
-  //     });
-  //   }, joinChannelSuccess: (channel, uid, elapsed) {
-  //     setState(() {
-  //       final info = 'onJoinChannel: $channel, uid: $uid';
-  //       _infoStrings.add(info);
-  //     });
-  //   }, leaveChannel: (stats) {
-  //     setState(() {
-  //       _infoStrings.add('onLeaveChannel');
-  //       _users.clear();
-  //     });
-  //   }, userJoined: (uid, elapsed) {
-  //     setState(() {
-  //       final info = 'userJoined: $uid';
-  //       _infoStrings.add(info);
-  //       _users.add(uid);
-  //     });
-  //   }, userOffline: (uid, elapsed) {
-  //     setState(() {
-  //       final info = 'userOffline: $uid';
-  //       _infoStrings.add(info);
-  //       _users.remove(uid);
-  //     });
-  //   }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
-  //     setState(() {
-  //       final info = 'firstRemoteVideo: $uid ${width}x $height';
-  //       _infoStrings.add(info);
-  //     });
-  //   }));
-  // }
+  _joinChannel() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await Permission.microphone.request();
+    }
+    await _engine.joinChannel(config.Token, config.Channel_Name, null, 0);
+  }
 
   bool isPush = false;
 
@@ -123,6 +82,7 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
     setState(() {
       isPush = true;
     });
+    AudioCache().play('push_to_talk_audio.wav');
   }
 
   onUp() {
@@ -153,19 +113,30 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
                 return ListView.builder(
                   itemCount: users.length,
                   itemBuilder: (context, i) {
-                    return Card(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                        child: ListTile(
-                          title: Text(
-                            '${users[i].username}',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          trailing: GestureDetector(
-                            onTapDown: (_) => onPush(),
-                            onTapUp: (_) => onUp(),
-                            child: isPush
+                    return GestureDetector(
+                      onTapDown: (_) => onPush(),
+                      onTapUp: (_) => onUp(),
+                      child: Card(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                          child: ListTile(
+                            title: Text(
+                              '${users[i].username}',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            // trailing: GestureDetector(
+                            //   onTapDown: (_) => onPush(),
+                            //   onTapUp: (_) => onUp(),
+                            //   child: isPush
+                            //       ? Icon(
+                            //           Icons.mic,
+                            //           size: 40,
+                            //           color: Colors.green,
+                            //         )
+                            //       : Icon(Icons.mic, size: 30),
+                            // ),
+                            trailing: isPush
                                 ? Icon(
                                     Icons.mic,
                                     size: 40,
