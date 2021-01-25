@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   meta: ^1.2.4
+  # axios: ^0.0.1
   intl: ^0.16.1
   http: ^0.12.2
   # location: ^3.0.2

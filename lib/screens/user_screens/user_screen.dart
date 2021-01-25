@@ -1,10 +1,17 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orbigo/models/user.dart';
+import 'package:orbigo/providers/auth_provider.dart';
+import 'package:orbigo/providers/user_provider.dart';
 import 'package:orbigo/screens/events_screen.dart';
 import 'package:orbigo/screens/map_screen.dart';
 import 'package:orbigo/screens/user_screens/groups/group_screen.dart';
 import 'package:orbigo/screens/user_screens/subsribers/subscriber_screen.dart';
 import 'package:orbigo/screens/user_screens/user_profile_screen.dart';
+import 'package:orbigo/utils/config.dart';
 import 'package:orbigo/widgets/app_drawer.dart';
+import 'package:orbigo/widgets/loading_indicator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class UserScreen extends StatefulWidget {
@@ -103,33 +110,8 @@ class _UserScreenState extends State<UserScreen> {
           Navigator.of(context).pushNamed(UserProfileScreen.routeName);
         },
       ),
-      // PopupMenuButton<String>(
-      //   onSelected: handleClick,
-      //   itemBuilder: (BuildContext context) {
-      //     return {
-      //       'Logout',
-      //       'Settings',
-      //     }.map((String choice) {
-      //       return PopupMenuItem<String>(
-      //         value: choice,
-      //         child: Text(choice),
-      //       );
-      //     }).toList();
-      //   },
-      // ),
     ];
   }
-
-  // void handleClick(String value) {
-  //   switch (value) {
-  //     case 'Logout':
-  //       print('Logout');
-  //       break;
-  //     case 'Settings':
-  //       print('Settings');
-  //       break;
-  //   }
-  // }
 
   void _startSearch() {
     ModalRoute.of(context)

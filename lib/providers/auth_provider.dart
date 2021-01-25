@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:orbigo/screens/user_screens/user_screen.dart';
 import 'package:orbigo/services/auth_service.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -26,46 +28,43 @@ class AuthProvider with ChangeNotifier {
   Map _user = {};
   Map get user => _user;
   setUser() async {
-    // _user = await _authService.getUser();
+    _user = await _authService.getUser();
     isLoggedIn = _user == null ? false : true;
     notifyListeners();
   }
 
-  // checkLoginStatus() async {
-  //   return _user = await _authService.getUser();
-  // }
+  checkLoginStatus() async {
+    return _user = await _authService.getUser();
+  }
 
-  // login(context, userCredential) async {
-  //   isLoading = true;
-  //   final response = await _authService.loginUser(userCredential);
+  login(context, userCredential) async {
+    isLoading = true;
+    final response = await _authService.loginUser(userCredential);
 
-  //   if (response['status'] != false) {
-  //     // Timer(
-  //     //     Duration(seconds: 5),
-  //     //     () => Flushbar(
-  //     //           title: "Failed Login",
-  //     //           message: 'Timeout',
-  //     //           duration: Duration(seconds: 3),
-  //     //         ).show(context));
-  //     setUser();
-  //     Navigator.pushAndRemoveUntil(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => TabsScreen()),
-  //       (Route<dynamic> route) => false,
-  //     );
-  //   } else {
-  //     Flushbar(
-  //       title: "Failed Login",
-  //       message: response['message']['status'].toString(),
-  //       duration: Duration(seconds: 3),
-  //     ).show(context);
-  //   }
+    print(response);
 
-  //   isLoading = false;
-  // }
+    if (response['status'] != false) {
+      setUser();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => UserScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      Flushbar(
+        title: "Failed Login",
+        message: response['message'],
+        duration: Duration(seconds: 3),
+      ).show(context);
+    }
 
-  // logOut(context) async {
-  //   await _authService.logoutUser(context);
-  //   notifyListeners();
-  // }
+    isLoading = false;
+  }
+
+  logOut(context) async {
+    await _authService.logoutUser(context);
+    notifyListeners();
+  }
 }
+
+final authProvider = ChangeNotifierProvider((ref) => AuthProvider());

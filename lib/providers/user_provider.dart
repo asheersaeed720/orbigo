@@ -1,15 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orbigo/models/user.dart';
+import 'package:orbigo/services/user_service.dart';
+import 'package:orbigo/utils/web_api.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:location/location.dart';
 
 class UserNotifier extends ChangeNotifier {
+  UserService _userService = UserService();
+
   int _value = 0;
   int get value => _value;
 
   void increment() {
     _value += 1;
     notifyListeners();
+  }
+
+  Future<List<User>> getUsers(userToken) async {
+    return _userService.getUsers(userToken);
   }
 
   // LatLng initialcameraposition = LatLng(24.8607, 67.0011);
@@ -31,6 +42,7 @@ class UserNotifier extends ChangeNotifier {
 //       );
 //     });
 //   }
+
 }
 
 final userProvider = ChangeNotifierProvider((ref) => UserNotifier());

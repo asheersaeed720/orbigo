@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orbigo/providers/auth_provider.dart';
 import 'package:orbigo/screens/about_screen.dart';
 import 'package:orbigo/screens/change_password_screen.dart';
 import 'package:orbigo/screens/login_screen.dart';
@@ -43,12 +45,17 @@ class AppDrawer extends StatelessWidget {
             accountEmail: Text('Email here'),
           ),
 
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text("Logout"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushNamed(LoginScreen.routeName);
+          Consumer(
+            builder: (context, watch, _) {
+              final authPvd = watch(authProvider);
+              return ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text("Logout"),
+                onTap: () {
+                  Navigator.pop(context);
+                  authPvd.logOut(context);
+                },
+              );
             },
           ),
           ListTile(
