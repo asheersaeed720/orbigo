@@ -30,9 +30,17 @@ class _UserScreenState extends State<UserScreen> {
   bool _isSearching = false;
   String searchQuery = "Search query";
 
+  // test() async {
+  //   final response = await context
+  //       .read(userProvider)
+  //       .createChannel(context.read(authProvider).user['jwt']);
+
+  //   print('khusra: $response');
+  // }
+
   @override
   void initState() {
-    // joinChannelFunction();
+    // test();
     super.initState();
   }
 

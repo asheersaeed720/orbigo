@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var doLogin = () async {
       if (_formKey.currentState.validate()) {
         authPvd.isLoading = true;
-        final response = await authPvd.login(_userCredential);
+        final response = await authPvd.login(_userCredential, userPvd);
         if (response['status'] != false) {
           authPvd.setUser();
           Navigator.pushAndRemoveUntil(
@@ -58,8 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(builder: (context) => UserScreen()),
             (Route<dynamic> route) => false,
           );
-
-          userPvd.createChannel(response['user']['jwt']);
+          // userPvd.createChannel(response['user']['jwt']);
         } else {
           Flushbar(
             title: "Failed Login",

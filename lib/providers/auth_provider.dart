@@ -15,7 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 class AuthProvider with ChangeNotifier {
   AuthService _authService = AuthService();
 
-  // RtcEngine _engine;
+  RtcEngine _engine;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -39,12 +39,20 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Map _channel = {};
+  // Map get channel => _channel;
+  // setChannel() async {
+  //   _channel = await _authService.getUser();
+  //   isLoggedIn = _channel == null ? false : true;
+  //   notifyListeners();
+  // }
+
   checkLoginStatus() async {
     return _user = await _authService.getUser();
   }
 
-  login(userCredential) {
-    return _authService.loginUser(userCredential);
+  login(userCredential, userPvd) {
+    return _authService.loginUser(userCredential, userPvd);
   }
 
   // joinChannel() async {
