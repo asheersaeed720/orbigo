@@ -3,24 +3,31 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:orbigo/providers/auth_provider.dart';
+import 'package:orbigo/providers/user_provider.dart';
 import 'package:orbigo/utils/config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class VideoGroup extends StatefulWidget {
   /// non-modifiable channel name of the page
-  final String channelName;
+  // final String channelName;
 
   /// non-modifiable client role of the page
-  final ClientRole role;
+  // final ClientRole role;
 
   /// Creates a call page with given channel name.
-  const VideoGroup({Key key, this.channelName, this.role}) : super(key: key);
+  // const VideoGroup({Key key, this.channelName, this.role}) : super(key: key);
 
   @override
   _VideoGroupState createState() => _VideoGroupState();
 }
 
 class _VideoGroupState extends State<VideoGroup> {
+  ClientRole role = ClientRole.Broadcaster;
+
   final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
@@ -41,6 +48,7 @@ class _VideoGroupState extends State<VideoGroup> {
     super.initState();
     // initialize agora sdk
     initialize();
+    _joinChannel();
   }
 
   Future<void> initialize() async {
@@ -60,8 +68,22 @@ class _VideoGroupState extends State<VideoGroup> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = VideoDimensions(1920, 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    // await _engine.joinChannel(VideoToken, widget.channelName, null, 0);
-    await _engine.joinChannel(Token, widget.channelName, null, 0);
+  }
+
+  _joinChannel() async {
+    var response = await context
+        .read(userProvider)
+        .createChannel(context.read(authProvider).user['jwt']);
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await [Permission.microphone, Permission.camera].request();
+    }
+    print('Joined');
+    print(response);
+    await _engine?.joinChannel(
+        response['channel']['key'],
+        response['channel']['Channelname'],
+        null,
+        response['channel']['user']['id']);
   }
 
   /// Create agora sdk instance and initialize
@@ -70,7 +92,7 @@ class _VideoGroupState extends State<VideoGroup> {
     await _engine.enableVideo();
     // await _engine.enableAudio();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
-    await _engine.setClientRole(widget.role);
+    await _engine.setClientRole(role);
   }
 
   /// Add agora event handlers
@@ -113,7 +135,7 @@ class _VideoGroupState extends State<VideoGroup> {
   /// Helper function to get list of native views
   List<Widget> _getRenderViews() {
     final List<StatefulWidget> list = [];
-    if (widget.role == ClientRole.Broadcaster) {
+    if (role == ClientRole.Broadcaster) {
       list.add(RtcLocalView.SurfaceView());
     }
     _users.forEach((int uid) => list.add(RtcRemoteView.SurfaceView(uid: uid)));
@@ -175,7 +197,7 @@ class _VideoGroupState extends State<VideoGroup> {
 
   /// Toolbar layout
   Widget _toolbar() {
-    if (widget.role == ClientRole.Audience) return Container();
+    if (role == ClientRole.Audience) return Container();
     return Container(
       alignment: Alignment.bottomCenter,
       padding: const EdgeInsets.symmetric(vertical: 48),

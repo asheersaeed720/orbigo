@@ -21,7 +21,10 @@ class SubscriberScreen extends StatefulWidget {
 class _SubscriberScreenState extends State<SubscriberScreen> {
   RtcEngine _engine;
 
+  List<User> users;
+
   // String channelId = 'global';
+  Map<int, bool> userActive = {};
   bool isJoined = false,
       // openMicrophone = true,
       openMicrophone = false,
@@ -51,10 +54,43 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
     await _engine.enableAudio();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Broadcaster);
+    _engine?.enableLocalAudio(false);
+    _engine?.enableAudioVolumeIndication(200, 3, true);
   }
 
   _addListeners() {
     _engine?.setEventHandler(RtcEngineEventHandler(
+      audioVolumeIndication: (speakers, volume) {
+        if (speakers.length == 0) {
+          setState(() {
+            userActive = {};
+          });
+        }
+        //log("audioVOL");
+        speakers.forEach((speaker) {
+          print(
+              "uid: ${speaker.uid} vad: ${speaker.vad} vol: ${speaker.volume}");
+          if (speaker.volume > 10 && userActive[speaker.uid] != true) {
+            setState(() {
+              userActive[speaker.uid] = true;
+            });
+          } else if (speaker.volume < 10 && userActive[speaker.uid] != false) {
+            setState(() {
+              userActive[speaker.uid] = false;
+            });
+          }
+        });
+      },
+      remoteAudioStateChanged: (int uid, AudioRemoteState state,
+          AudioRemoteStateReason audioRemoteStateReason, int elapsed) {
+        if (state == AudioRemoteState.Stopped ||
+            audioRemoteStateReason == AudioRemoteStateReason.RemoteMuted ||
+            audioRemoteStateReason == AudioRemoteStateReason.RemoteOffline) {
+          userActive[uid] = false;
+        }
+        print(
+            "remoteAudioStateChanged: uid: $uid, state: $state, audioRemoteStateReason: $audioRemoteStateReason, elapsed: $elapsed, ");
+      },
       error: (code) {
         setState(() {
           print('onError: $code');
@@ -122,7 +158,10 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
       isPush = true;
     });
     _engine?.enableLocalAudio(true);
-    // this._switchMicrophone();
+    setState(() {
+      openMicrophone = true;
+    });
+    //this._switchMicrophone();
     // AudioCache().play('push_to_talk_audio.wav');
     //   widget._engine?.enableLocalAudio(!openMicrophone)?.then((value) {
     //     setState(() {
@@ -160,10 +199,10 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
             // crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-              // RaisedButton(
-              //   onPressed: this._switchMicrophone,
-              //   child: Text('Microphone ${openMicrophone ? 'on' : 'off'}'),
-              // ),
+              /* RaisedButton(
+                onPressed: this._switchMicrophone,
+                child: Text('Microphone ${openMicrophone ? 'on' : 'off'}'),
+              ), */
               GestureDetector(
                 onTapDown: (_) => onPush(),
                 onTapUp: (_) => onUp(),
@@ -192,7 +231,7 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
                   future: userPvd.getUsers(authPvd),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<User> users = snapshot.data;
+                      users = snapshot.data;
 
                       return ListView.builder(
                         itemCount: users.length,
@@ -206,7 +245,13 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
                                   '${users[i].username}',
                                   style: TextStyle(fontSize: 18),
                                 ),
-                                trailing: Icon(Icons.mic, size: 30),
+                                trailing: Icon(
+                                  Icons.mic,
+                                  size: 30,
+                                  color: (userActive[users[i].id] ?? false)
+                                      ? Colors.green
+                                      : Colors.grey,
+                                ),
                               ),
                             ),
                           );
