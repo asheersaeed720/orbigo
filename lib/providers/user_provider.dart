@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:orbigo/models/chat.dart';
 import 'package:orbigo/models/user.dart';
 import 'package:orbigo/providers/auth_provider.dart';
 import 'package:orbigo/services/user_service.dart';
@@ -52,8 +53,20 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<User>> getUsers(user) async {
-    return _userService.getUsers(user);
+  // Future<List<User>> getUsers(user) async {
+  //   return _userService.getUsers(user);
+  // }
+
+  Future<List<User>> getUser(userToken, uid) async {
+    return _userService.getUser(userToken, uid);
+  }
+
+  Future<List<Chat>> getUserMessages(authPvd) async {
+    return _userService.getMessages(authPvd);
+  }
+
+  Future<Map> sendMessages(authPvd, textMessage) async {
+    return _userService.sendUserMessages(authPvd, textMessage);
   }
 
   LatLng initialcameraposition = LatLng(24.8607, 67.0011);

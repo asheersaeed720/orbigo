@@ -29,7 +29,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-      print(responseJson);
+      // print(responseJson);
       saveUser(responseJson);
 
       // userPvd.createChannel(responseJson['jwt']);

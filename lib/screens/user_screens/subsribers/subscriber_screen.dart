@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orbigo/models/user.dart';
 import 'package:orbigo/providers/auth_provider.dart';
 import 'package:orbigo/providers/user_provider.dart';
+import 'package:orbigo/screens/user_screens/subsribers/subsriber_chat_screen.dart';
 import 'package:orbigo/utils/config.dart' as config;
 import 'package:orbigo/widgets/loading_indicator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,7 +22,7 @@ class SubscriberScreen extends StatefulWidget {
 class _SubscriberScreenState extends State<SubscriberScreen> {
   RtcEngine _engine;
 
-  List<User> users;
+  List<User> users = List<User>();
 
   // String channelId = 'global';
   Map<int, bool> userActive = {};
@@ -60,6 +61,23 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
 
   _addListeners() {
     _engine?.setEventHandler(RtcEngineEventHandler(
+      // localAudioStats: (localAudioStats) {},
+      userJoined: (uid, elapsed) {
+        // final response = context
+        //     .read(userProvider)
+        //     .getUser(context.read(authProvider).user['jwt'], uid);
+        // log('getUserResponse: $response');
+        setState(() {
+          users.add(User(
+            id: uid,
+            username: "user $uid",
+          ));
+        });
+        //print();
+      },
+      userOffline: (uid, elapsed) {
+        users.removeWhere((item) => item.id == uid);
+      },
       audioVolumeIndication: (speakers, volume) {
         if (speakers.length == 0) {
           setState(() {
@@ -227,49 +245,82 @@ class _SubscriberScreenState extends State<SubscriberScreen> {
                 ),
               ),
               Expanded(
-                child: FutureBuilder<List<User>>(
-                  future: userPvd.getUsers(authPvd),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      users = snapshot.data;
-
-                      return ListView.builder(
-                        itemCount: users.length,
-                        itemBuilder: (context, i) {
-                          return Card(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 6),
-                              child: ListTile(
-                                title: Text(
-                                  '${users[i].username}',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                trailing: Icon(
-                                  Icons.mic,
-                                  size: 30,
-                                  color: (userActive[users[i].id] ?? false)
-                                      ? Colors.green
-                                      : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(
-                          "${snapshot.error}",
+                child: ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+                        child: ListTile(
+                          title: Text(
+                            '${users[i].username}',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          trailing: Icon(
+                            Icons.mic,
+                            size: 30,
+                            color: (userActive[users[i].id] ?? false)
+                                ? Colors.green
+                                : Colors.grey,
+                          ),
                         ),
-                      );
-                    }
-                    return LoadingIndicator();
+                      ),
+                    );
                   },
                 ),
               ),
+              // Expanded(
+              //   child: FutureBuilder<List<User>>(
+              //     future: userPvd.getUsers(authPvd),
+              //     builder: (context, snapshot) {
+              //       if (snapshot.hasData) {
+              //         users = snapshot.data;
+
+              //         return ListView.builder(
+              //           itemCount: users.length,
+              //           itemBuilder: (context, i) {
+              //             return Card(
+              //               child: Padding(
+              //                 padding: EdgeInsets.symmetric(
+              //                     vertical: 12, horizontal: 6),
+              //                 child: ListTile(
+              //                   title: Text(
+              //                     '${users[i].username}',
+              //                     style: TextStyle(fontSize: 18),
+              //                   ),
+              //                   trailing: Icon(
+              //                     Icons.mic,
+              //                     size: 30,
+              //                     color: (userActive[users[i].id] ?? false)
+              //                         ? Colors.green
+              //                         : Colors.grey,
+              //                   ),
+              //                 ),
+              //               ),
+              //             );
+              //           },
+              //         );
+              //       } else if (snapshot.hasError) {
+              //         return Center(
+              //           child: Text(
+              //             "${snapshot.error}",
+              //           ),
+              //         );
+              //       }
+              //       return LoadingIndicator();
+              //     },
+              //   ),
+              // ),
             ],
           );
+        },
+      ),
+      floatingActionButton: new FloatingActionButton(
+        elevation: 0.0,
+        child: new Icon(Icons.chat),
+        onPressed: () {
+          Navigator.of(context).pushNamed(SubsriberChatScreen.routeName);
         },
       ),
     );

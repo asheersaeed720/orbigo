@@ -3,4 +3,5 @@ class WebAPI {
   static const String loginURL = baseURL + '/auth/local';
   static const String userURL = baseURL + '/users';
   static const String createChannelURL = baseURL + '/channels';
+  static const String chatMessagesURL = baseURL + '/messages';
 }
